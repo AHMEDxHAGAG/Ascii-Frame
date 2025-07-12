@@ -23,7 +23,11 @@ def main():
 def gettingvid():
     project_name = input("Project Name: ")
     video_path = input("Video Path: ")
-    return (project_name, video_path)
+    e = video_path.split(".")[1]
+    if os.path.isfile(video_path) and (e=="webm" or e=="mp4" or e =="mov" or e=="avi" or e=="wmv"):
+        return (project_name, video_path)
+    else:
+        print("Wrong Video Path or File Format")
 
 def namefolder(x):
     fh.changedirtopath(os.path.join("AsciiFrame", "Projects"))
