@@ -3,7 +3,7 @@ import os
 import cv2 as cv
 import re
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 import fileio_handler as fh
 
 def main():
@@ -54,17 +54,56 @@ def namefolder(x):
     
 
 def extract_frames(path, name):
+    print()
     capture = cv.VideoCapture(path)
     count = 0
-    try: 
-        while True:
-            count +=1
-            isTrue, frame = capture.read()
-            gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-            cv.imwrite(os.path.expanduser(f"~/AsciiFrame/Projects/{name}/Frame{count}.jpg"), gray)
-            cv.waitKey(1)
-    except :
-        pass
+    #try: 
+    while True:
+        count +=1
+        isTrue, frame = capture.read()
+        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        pixels = np.array(gray, dtype=np.uint8)
+        black = np.zeros((int(pixels.shape[0]*1), int(pixels.shape[1]*1)), dtype=np.uint8)
+        Blank = Image.fromarray(black)
+        draw = ImageDraw.Draw(Blank)
+        fonty = ImageFont.truetype(os.path.join(os.path.dirname(os.path.abspath(__file__)),'c.ttf'), size=10)
+        word = fonty.getbbox("@")
+        print(f"Width = {word[2]-word[0]}")
+        print(f"Height = {word[3]-word[1]}")
+        r =0
+        for row in range(0,pixels.shape[0],10):
+            c=0
+            for col in range(0, pixels.shape[1], 7):
+                meany = int(pixels[row:row+10, col:col+7].mean())
+
+                if meany > 230:
+                    draw.text((c,r), "@", font=fonty, fill=255)
+                elif meany > 205:
+                    draw.text((c,r), "%", font=fonty, fill=255)
+                elif meany > 180:
+                    draw.text((c,r), "#", font=fonty, fill=255)
+                elif meany > 155:
+                    draw.text((c,r), "*", font=fonty, fill=255)
+                elif meany > 131:
+                    draw.text((c,r), "+", font=fonty, fill=255)
+                elif meany > 106:
+                    draw.text((c,r), "=", font=fonty, fill=255)
+                elif meany > 81:
+                    draw.text((c,r), "-", font=fonty, fill=255)
+                elif meany > 56:
+                    draw.text((c,r), ":", font=fonty, fill=255)
+                elif meany > 26:
+                    draw.text((c,r), ".", font=fonty, fill=255)
+                elif meany >=0 :
+                    draw.text((c,r), " ", font=fonty, fill=255)
+                
+                c += 7
+            r += 10
+        
+        cv.imwrite(os.path.expanduser(f"~/AsciiFrame/Projects/{name}/Frame{count}.jpg"), np.array(Blank))
+        
+    #except :
+        #pass
 
 
 main()
