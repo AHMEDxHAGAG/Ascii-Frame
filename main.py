@@ -66,15 +66,15 @@ def extract_frames(path, name):
         black = np.zeros((int(pixels.shape[0]*1), int(pixels.shape[1]*1)), dtype=np.uint8)
         Blank = Image.fromarray(black)
         draw = ImageDraw.Draw(Blank)
-        fonty = ImageFont.truetype(os.path.join(os.path.dirname(os.path.abspath(__file__)),'c.ttf'), size=12)
+        fonty = ImageFont.truetype(os.path.join(os.path.dirname(os.path.abspath(__file__)),'c.ttf'), size=11)
         word = fonty.getbbox("@")
         print(f"Width = {word[2]-word[0]}")
         print(f"Height = {word[3]-word[1]}")
         r =0
-        for row in range(0,pixels.shape[0],10):
+        for row in range(0,pixels.shape[0],8):
             c=0
             for col in range(0, pixels.shape[1], 7):
-                meany = int(pixels[row:row+10, col:col+7].mean())
+                meany = int(pixels[row:row+8, col:col+7].mean())
 
                 if meany > 230:
                     draw.text((c,r), "@", font=fonty, fill=255)
@@ -98,7 +98,7 @@ def extract_frames(path, name):
                     draw.text((c,r), " ", font=fonty, fill=255)
                 
                 c += 7
-            r += 10
+            r += 8
         
         cv.imwrite(os.path.expanduser(f"~/AsciiFrame/Projects/{name}/Frame{count}.jpg"), np.array(Blank))
         
