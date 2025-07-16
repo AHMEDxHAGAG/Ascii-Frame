@@ -66,7 +66,7 @@ def extract_frames(path, name):
         black = np.zeros((int(pixels.shape[0]*1), int(pixels.shape[1]*1)), dtype=np.uint8)
         Blank = Image.fromarray(black)
         draw = ImageDraw.Draw(Blank)
-        fonty = ImageFont.truetype(os.path.join(os.path.dirname(os.path.abspath(__file__)),'c.ttf'), size=10)
+        fonty = ImageFont.truetype(os.path.join(os.path.dirname(os.path.abspath(__file__)),'c.ttf'), size=12)
         word = fonty.getbbox("@")
         print(f"Width = {word[2]-word[0]}")
         print(f"Height = {word[3]-word[1]}")
