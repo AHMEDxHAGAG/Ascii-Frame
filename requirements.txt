@@ -3,4 +3,4 @@ Pillow==10.3.0
 numpy==1.26.4
 ffmpeg-python
 ffmpeg
-audio-extract
+git+https://github.com/riad-azz/audio-extract.git
